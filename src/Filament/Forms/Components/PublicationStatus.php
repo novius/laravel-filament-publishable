@@ -35,9 +35,6 @@ class PublicationStatus extends Select
 
             return $statuses;
         });
-        $this->afterStateUpdated(function (?string $state, ?string $old, Model $record) {
-            $record->{$this->name} = PublicationStatusEnum::tryFrom($state);
-        });
         $this->default(PublicationStatusEnum::draft->value);
         $this->live();
     }

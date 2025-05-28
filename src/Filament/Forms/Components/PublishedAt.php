@@ -2,11 +2,11 @@
 
 namespace Novius\LaravelFilamentPublishable\Filament\Forms\Components;
 
+use Filament\Forms\Components\Component;
 use Filament\Forms\Components\DateTimePicker;
-use Illuminate\Database\Eloquent\Model;
+use Filament\Forms\Get;
 use Novius\LaravelFilamentPublishable\Filament\Traits\IsPublishable;
 use Novius\LaravelPublishable\Enums\PublicationStatus;
-use Novius\LaravelPublishable\Traits\Publishable;
 
 class PublishedAt extends DateTimePicker
 {
@@ -17,9 +17,10 @@ class PublishedAt extends DateTimePicker
         parent::setUp();
 
         $this->label(trans('laravel-filament-publishable::messages.fields.published_at'));
-        $this->hidden(function (?Model $record) {
-            /** @var Model&Publishable $record */
-            return $record && $this->isPublishable($record) && $record->{$record->getPublicationStatusColumn()} !== PublicationStatus::scheduled;
+        $this->hidden(function (Get $get, Component $component) {
+            $modelClass = $component->getModel();
+
+            return $this->isPublishable($modelClass) && $get($this->publishableModel($modelClass)->getPublicationStatusColumn()) !== PublicationStatus::scheduled->value;
         });
         $this->rule('required');
         $this->required();

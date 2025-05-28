@@ -2,7 +2,9 @@
 
 namespace Novius\LaravelFilamentPublishable\Filament\Forms\Components;
 
+use Filament\Forms\Components\Component;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Get;
 use Illuminate\Database\Eloquent\Model;
 use Novius\LaravelFilamentPublishable\Filament\Traits\IsPublishable;
 use Novius\LaravelPublishable\Enums\PublicationStatus;
@@ -17,13 +19,16 @@ class ExpiredAt extends DateTimePicker
         parent::setUp();
 
         $this->label(trans('laravel-filament-publishable::messages.fields.expired_at'));
-        $this->hidden(function (?Model $record) {
-            /** @var Model&Publishable $record */
-            return $record && $this->isPublishable($record) && $record->{$record->getPublicationStatusColumn()} !== PublicationStatus::scheduled;
+        $this->hidden(function (Get $get, Component $component) {
+            $modelClass = $component->getModel();
+
+            return $this->isPublishable($modelClass) && $get($this->publishableModel($modelClass)->getPublicationStatusColumn()) !== PublicationStatus::scheduled->value;
         });
-        $this->after(function (?Model $record) {
+        $this->after(function (Get $get, Component $component) {
+            $modelClass = $component->getModel();
+
             /** @var Model&Publishable $record */
-            return $record && $this->isPublishable($record) ? $record->getPublishedAtColumn() : null;
+            return $this->isPublishable($modelClass) ? $get($this->publishableModel($modelClass)->getPublishedAtColumn()) : null;
         });
     }
 }
