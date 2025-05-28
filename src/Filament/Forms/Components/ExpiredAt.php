@@ -17,13 +17,13 @@ class ExpiredAt extends DateTimePicker
         parent::setUp();
 
         $this->label(trans('laravel-filament-publishable::messages.fields.expired_at'));
-        $this->hidden(function (Model $record) {
+        $this->hidden(function (?Model $record) {
             /** @var Model&Publishable $record */
-            return $this->isPublishable($record) && $record->{$record->getPublicationStatusColumn()} !== PublicationStatus::scheduled;
+            return $record && $this->isPublishable($record) && $record->{$record->getPublicationStatusColumn()} !== PublicationStatus::scheduled;
         });
-        $this->after(function (Model $record) {
+        $this->after(function (?Model $record) {
             /** @var Model&Publishable $record */
-            return $this->isPublishable($record) ? $record->getPublishedAtColumn() : null;
+            return $record && $this->isPublishable($record) ? $record->getPublishedAtColumn() : null;
         });
     }
 }

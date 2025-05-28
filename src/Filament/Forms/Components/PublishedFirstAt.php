@@ -17,9 +17,9 @@ class PublishedFirstAt extends DateTimePicker
 
         $this->label(trans('laravel-filament-publishable::messages.fields.published_first_at'));
         $this->hiddenOn('create');
-        $this->hidden(function (Model $record) {
+        $this->hidden(function (?Model $record) {
             /** @var Model&Publishable $record */
-            return $this->isPublishable($record) && (! $record->{$record->getPublishedFirstAtColumn()} || ! $record->isPublished());
+            return $record && $this->isPublishable($record) && (! $record->{$record->getPublishedFirstAtColumn()} || ! $record->isPublished());
         });
         $this->rule('required');
         $this->required();
