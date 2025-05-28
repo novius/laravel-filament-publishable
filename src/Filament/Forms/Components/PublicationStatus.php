@@ -17,7 +17,7 @@ class PublicationStatus extends Select
 
         $this->label(trans('laravel-filament-publishable::messages.fields.publication_status'));
         $this->rules('required');
-        $this->options(function (Model $record) {
+        $this->options(function (?Model $record) {
             $statuses = [
                 PublicationStatusEnum::draft->value => PublicationStatusEnum::draft->getLabel(),
                 PublicationStatusEnum::published->value => PublicationStatusEnum::published->getLabel(),
@@ -25,7 +25,7 @@ class PublicationStatus extends Select
                 PublicationStatusEnum::scheduled->value => PublicationStatusEnum::scheduled->getLabel(),
             ];
 
-            if ($this->isPublishable($record)) {
+            if ($record && $this->isPublishable($record)) {
                 if ($record->{$this->name} !== null) {
                     unset($statuses[PublicationStatusEnum::draft->value]);
                 } else {
