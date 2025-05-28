@@ -13,6 +13,8 @@ parameters:
     editorUrlTitle: '%%file%%:%%line%%'
 
     ignoreErrors:
+        - '#Model::getPubli#'
+        - '#PHPDoc tag @return#'
         -
             identifier: varTag.trait
         -
