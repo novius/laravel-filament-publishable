@@ -16,6 +16,10 @@ parameters:
         - '#Model::getPubli#'
         - '#PHPDoc tag @return#'
         -
+            identifier: instanceof.alwaysFalse
+        -
+            identifier: booleanOr.alwaysFalse
+        -
             identifier: varTag.trait
         -
             identifier: generics.notSubtype

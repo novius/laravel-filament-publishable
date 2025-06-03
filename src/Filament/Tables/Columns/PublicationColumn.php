@@ -4,7 +4,9 @@ namespace Novius\LaravelFilamentPublishable\Filament\Tables\Columns;
 
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Novius\LaravelFilamentPublishable\Filament\Traits\IsPublishable;
+use Novius\LaravelPublishable\Enums\PublicationStatus;
 use Novius\LaravelPublishable\Traits\Publishable;
 
 class PublicationColumn extends TextColumn
@@ -16,36 +18,14 @@ class PublicationColumn extends TextColumn
         parent::setUp();
 
         $this->label(trans('laravel-filament-publishable::messages.fields.publication_status'));
-        $this->badge(function (Model $record): string {
-            /** @var Model&Publishable $record */
-            if ($this->isPublishable($record)) {
-                if ($record->isPublished()) {
-                    return 'success';
-                }
-                if ($record->willBePublished()) {
-                    return 'warning';
-                }
-            }
-
-            return 'danger';
-        });
-        $this->icon(function (Model $record): string {
-            /** @var Model&Publishable $record */
-            if ($this->isPublishable($record)) {
-                if ($record->isPublished()) {
-                    return 'heroicon-o-check';
-                }
-                if ($record->willBePublished()) {
-                    return 'heroicon-o-clock';
-                }
-            }
-
-            return 'heroicon-o-x-circle';
-        });
+        $this->badge();
+        $this->color(fn (PublicationStatus $state) => Arr::get($this->publicationColors(), $state->value));
+        $this->icon(fn (PublicationStatus $state) => Arr::get($this->publicationIcons(), $state->value));
         $this->formatStateUsing(function (Model $record): string {
             /** @var Model&Publishable $record */
+            $model = $this->publishableModel($record);
 
-            return $this->isPublishable($record) ? $record->publicationLabel() : '';
+            return $model ? $record->publicationLabel() : '';
         });
     }
 }

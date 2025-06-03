@@ -24,7 +24,9 @@ class PublishedFirstAt extends DateTimePicker
             }
 
             /** @var Model&Publishable $record */
-            return $this->isPublishable($record) && ! $record->isPublished();
+            $model = $this->publishableModel($record);
+
+            return $model && ! $record->isPublished();
         });
         $this->rule('required');
         $this->required();

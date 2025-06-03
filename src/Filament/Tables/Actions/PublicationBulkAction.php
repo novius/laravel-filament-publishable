@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Novius\LaravelFilamentPublishable\Filament\Traits\IsPublishable;
 use Novius\LaravelPublishable\Enums\PublicationStatus;
-use Novius\LaravelPublishable\Traits\Publishable;
 
 class PublicationBulkAction extends BulkAction
 {
@@ -46,13 +45,14 @@ class PublicationBulkAction extends BulkAction
 
         $this->defaultColor('warning');
 
-        $this->icon('heroicon-o-check-circle');
+        $this->icon('heroicon-o-check');
 
         $this->action(function (array $data, Collection $records): void {
             $records->each(function (Model $record) use ($data) {
-                if ($this->isPublishable($record)) {
-                    /** @var Model&Publishable $record */
-                    $record->{$record->getPublicationStatusColumn()} = $data['publication_status'];
+                $model = $this->publishableModel();
+
+                if ($model) {
+                    $record->{$model->getPublicationStatusColumn()} = $data['publication_status'];
                 }
 
                 return $record->save();

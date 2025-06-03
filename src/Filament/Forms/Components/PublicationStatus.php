@@ -2,12 +2,12 @@
 
 namespace Novius\LaravelFilamentPublishable\Filament\Forms\Components;
 
-use Filament\Forms\Components\Select;
+use Filament\Forms\Components\ToggleButtons;
 use Illuminate\Database\Eloquent\Model;
 use Novius\LaravelFilamentPublishable\Filament\Traits\IsPublishable;
 use Novius\LaravelPublishable\Enums\PublicationStatus as PublicationStatusEnum;
 
-class PublicationStatus extends Select
+class PublicationStatus extends ToggleButtons
 {
     use IsPublishable;
 
@@ -15,17 +15,20 @@ class PublicationStatus extends Select
     {
         parent::setUp();
 
+        $statuses = [
+            PublicationStatusEnum::draft->value => PublicationStatusEnum::draft->getLabel(),
+            PublicationStatusEnum::published->value => PublicationStatusEnum::published->getLabel(),
+            PublicationStatusEnum::unpublished->value => PublicationStatusEnum::unpublished->getLabel(),
+            PublicationStatusEnum::scheduled->value => PublicationStatusEnum::scheduled->getLabel(),
+        ];
+
         $this->label(trans('laravel-filament-publishable::messages.fields.publication_status'));
         $this->rules('required');
-        $this->options(function (?Model $record) {
-            $statuses = [
-                PublicationStatusEnum::draft->value => PublicationStatusEnum::draft->getLabel(),
-                PublicationStatusEnum::published->value => PublicationStatusEnum::published->getLabel(),
-                PublicationStatusEnum::unpublished->value => PublicationStatusEnum::unpublished->getLabel(),
-                PublicationStatusEnum::scheduled->value => PublicationStatusEnum::scheduled->getLabel(),
-            ];
+        $this->inline();
+        $this->options(function (?Model $record) use ($statuses) {
+            $model = $this->publishableModel();
 
-            if ($record && $this->isPublishable($record)) {
+            if ($record && $model) {
                 if ($record->{$this->name} !== null) {
                     unset($statuses[PublicationStatusEnum::draft->value]);
                 } else {
@@ -35,6 +38,8 @@ class PublicationStatus extends Select
 
             return $statuses;
         });
+        $this->icons($this->publicationIcons());
+        $this->colors($this->publicationColors());
         $this->default(PublicationStatusEnum::draft->value);
         $this->live();
     }
