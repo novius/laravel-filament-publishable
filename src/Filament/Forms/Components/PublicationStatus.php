@@ -23,7 +23,8 @@ class PublicationStatus extends ToggleButtons
         ];
 
         $this->label(trans('laravel-filament-publishable::messages.fields.publication_status'));
-        $this->rules('required');
+        $this->required();
+        $this->default(PublicationStatusEnum::draft->value);
         $this->inline();
         $this->options(function (?Model $record) use ($statuses) {
             $model = $this->publishableModel();
@@ -40,7 +41,6 @@ class PublicationStatus extends ToggleButtons
         });
         $this->icons($this->publicationIcons());
         $this->colors($this->publicationColors());
-        $this->default(PublicationStatusEnum::draft->value);
         $this->live();
     }
 }
