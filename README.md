@@ -9,7 +9,7 @@ This package allows you to manage Laravel Models which use [Laravel Publishable]
 
 ## Requirements
 
-* Laravel Filament >= 3.3
+* Laravel Filament >= 4
 * Laravel >= 11.0
 * PHP >= 8.2
 

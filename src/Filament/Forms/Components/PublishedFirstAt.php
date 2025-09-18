@@ -2,9 +2,9 @@
 
 namespace Novius\LaravelFilamentPublishable\Filament\Forms\Components;
 
-use Filament\Forms\Components\Component;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Component;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Get;
 use Illuminate\Database\Eloquent\Model;
 use Novius\LaravelFilamentPublishable\Filament\Traits\IsPublishable;
 use Novius\LaravelPublishable\Traits\Publishable;

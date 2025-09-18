@@ -2,8 +2,8 @@
 
 namespace Novius\LaravelFilamentPublishable\Filament\Tables\Actions;
 
+use Filament\Actions\BulkAction;
 use Filament\Forms\Components\Select;
-use Filament\Tables\Actions\BulkAction;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Novius\LaravelFilamentPublishable\Filament\Traits\IsPublishable;

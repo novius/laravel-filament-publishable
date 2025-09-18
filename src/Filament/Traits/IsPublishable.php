@@ -2,9 +2,9 @@
 
 namespace Novius\LaravelFilamentPublishable\Filament\Traits;
 
+use Filament\Actions\BulkAction;
 use Exception;
 use Filament\Forms\Components\Field;
-use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\Column;
 use Filament\Tables\Filters\BaseFilter;
 use Illuminate\Database\Eloquent\Model;
