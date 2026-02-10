@@ -28,7 +28,8 @@ class PublicationStatus extends ToggleButtons
         $this->default(PublicationStatusEnum::draft->value);
         $this->inline();
         $this->options(function (?Model $record) use ($statuses) {
-            /** @var Publishable $model */
+            /** @phpstan-ignore-next-line  */
+            /** @var Model&Publishable|null $model */
             $model = $this->publishableModel();
 
             if ($record && $model) {
